@@ -12,7 +12,7 @@ void simulated_annealing(Knapsack *ks, float ti, float tf, int max_iters, float 
             
             if(ks->change_item(id_in, id_out)) { // se consegue aplicar a alteração
                 int delta = ks->get_value() - curr_value; 
-                if(delta > 0 || exp(-delta / ti) > ((double)rand() / RAND_MAX)) { // se aumenta o valor da mochila com a alteração
+                if(delta > 0 || exp(-delta / ti) > ((double)rand() / RAND_MAX)) { // se aumenta o valor da mochila com a alteração, mantem
 
                 } else {
                     ks->change_item(id_out, id_in);
