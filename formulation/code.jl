@@ -104,7 +104,7 @@ function parse_file(filepath::String)
 					c = parse_int("param c :=", line)
 				end
 
-				if occursin("param : V : p w :=", line)
+				if occursin("param:V:pw:=", replace(line, " " => ""))
 					while true
 						line = readline(f)
 						occursin(";", line) && break
