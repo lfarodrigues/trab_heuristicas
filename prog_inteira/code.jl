@@ -36,16 +36,32 @@ function knapsack_problem(
 	model = Model(HiGHS.Optimizer)
 	set_time_limit_sec(model, time_limit_sec)
 
+	# Variável para cada escolha possível de item
 	@variable(model, escolha[1:n], Bin)
+
+	# Padrão do Knapsack problem
+	# Objetivo é maximizar o valor escolhido	
 	@objective(model, Max, p' * escolha)
+	# Não pode exceder o peso da mochila
 	@constraint(model, w' * escolha <= c)
+
+	# Adiciona constraint para cada aresta de conflito
+	# Garante que apenas 1 dos dois itens (ou nenhum) será escolhido se
+	# houver aresta entre os itens
 	for e in E @constraint(model, escolha[e[1]] + escolha[e[2]] <= 1) end
 
 	optimize!(model)
 
-	@show value.(escolha)
+	# Valor do modelo
 	@show objective_value(model)
+
+	# Capacidade utilizada
 	@show value(sum(w' * escolha))
+
+	# Itens escolhidos
+	# @show value.(escolha)
+	# Quantidade de itens escolhidos
+	@show value(sum(escolha))	
 end
 
 # Função auxiliar para ler um int do arquivo de input
