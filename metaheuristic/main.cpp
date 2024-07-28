@@ -22,19 +22,18 @@ void construct_initial_solution(Knapsack *ks)
 }
 
 int main(int argc, char **argv) {
-    Knapsack *ks = Knapsack::read_knapsack_instance("./kpcg_instances/C10_BPPC_5_0_5.txt_0.1.dat");
+    Knapsack *ks = Knapsack::read_knapsack_instance("./kpcg_instances/C3_BPPC_1_0_2.txt_0.1.dat");
     //ks->show_items_set();
     
-    cout << ks->get_max_weight() << endl;
-
     construct_initial_solution(ks);
 
     cout << *ks << endl;
 
     cout << "Start simulated annealing..." << endl;
-    simulated_annealing(ks, 1000, 0.01, 100, 0.99);
+    simulated_annealing(ks);
     cout << "Finished!" << endl;
 
+    cout << "Final knapsack object:" << endl;
     cout << *ks << endl;
 
     delete ks;

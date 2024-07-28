@@ -1,31 +1,47 @@
 #include <math.h>
+#include <random>
+#include <ctime>
 #include "simulated_annealing.h"
 #include "knapsack.h"
 #include "item.h"
 
-void simulated_annealing(Knapsack *ks, float ti, float tf, int max_iters, float cooling) {
-    while(ti > tf) {
-        for(int i = 0; i < max_iters; i++) {
-            int id_in = ks->pick_random_item();
-            int id_out = ks->get_minor_value_item();
-            int curr_value = ks->get_value();
+void simulated_annealing(Knapsack *ks) {
+    float alpha = 0.99999999;
+    
+    int cmax = 50000; // numero de loops
+
+    int t_o = 200;
+    int c = 0;
+    int t = t_o;
+    int temp_change = cmax;
+    int best = ks->get_value();
+    
+    int tempChange = cmax;
+
+    srand(time(0)); // gerador de numeros aleatorios
+
+    for (c; c < cmax; c++){
+        int in = ks->pick_random_item();      // escolhemos um item aleatorio
+        int out = ks->get_minor_value_item(); // escolhemos o item de menor valor/peso da mochila
+
+        int curr_value = ks->get_value();
+
+        if (ks->change_item(in, out)) { // foi capaz de inserir o item 
+            int new_value = ks->get_value();
+            int delta = new_value - curr_value;
+
+            double u = static_cast<double>(rand()) / RAND_MAX;
             
-            if(ks->change_item(id_in, id_out)) { // se consegue aplicar a alteração
-                int delta = ks->get_value() - curr_value; 
-                if(delta > 0 || exp(-delta / ti) > ((double)rand() / RAND_MAX)) { // se aumenta o valor da mochila com a alteração, mantem
-
-                } else {
-                    ks->change_item(id_out, id_in);
-                }
-            }        
+            if(delta>0 || exp(-fabs(delta)/t)>u) {
+                temp_change-=1;
+                if (temp_change%10==0)
+                    t=alpha*t;
+                if (ks->get_value() >= best)
+                    best = ks->get_value();
+            } else { // reverte
+                ks->change_item(out, in);
+            }
         }
-
-        ti *= cooling;
     }
-}
-void do_step_on_neighborhood() {
-
-}
-void evaluate() {
-
+    cout << "Best value encountered: " << best << endl;
 }

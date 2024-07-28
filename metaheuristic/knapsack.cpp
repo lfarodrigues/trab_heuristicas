@@ -87,16 +87,22 @@ bool Knapsack::add_item(int id) {
         cout << "Item not found in items dictionary!" << endl;
         return false;
     }
-    else if(it->second.get_weight() + this->weight <= max_weight 
+    else if(it->second.get_weight() + this->weight <= this->max_weight 
             && !it->second.get_is_in_knapsack()
             && !this->has_conflict(id)){
-        this->weight += it->second.get_weight();
-        this->value += it->second.get_value();
-        it->second.set_is_in_knapsack(1);
+        Item item = it->second;
+        this->weight += item.get_weight();
+        this->value += item.get_value();
+        item.set_is_in_knapsack(1);
         this->num_items++;
+
+        // update in map
+        (*items).erase(id);
+        (*items)[id] = item;
+
         this->update_minor_value_item(id);
 
-        cout << "Item added! " << "New weight: " << this->get_weight() << endl;
+        cout << "Item added! " << "New weight: " << this->weight << " New value: " << this->value << endl;
         
         return true;
     } else {
@@ -107,25 +113,44 @@ bool Knapsack::add_item(int id) {
 
 void Knapsack::update_minor_value_item(int id) {
     if(this->minor_value_item < 0) 
-        minor_value_item = id;
-    else {
-        int item_value = (*items)[id].get_value();
-        int min_value = (*items)[this->minor_value_item].get_value();
-        if(item_value < min_value) {
-            this->minor_value_item = item_value;
+        this->minor_value_item = id;
+    else if((*items)[this->minor_value_item].get_is_in_knapsack()){     
+        float proportion_item = (*items)[id].get_value()/(*items)[id].get_weight();
+        int proportion_min = (*items)[this->minor_value_item].get_value()/(*items)[this->minor_value_item].get_weight();
+
+        if(proportion_item < proportion_min) {
+            this->minor_value_item = id;
         }
     }
 }
 
+int Knapsack::search_minor_value_item() {
+    vector<int> ids = this->get_items_in_knapsack();
+    int minor = ids[0];
+    for(int i = 1; i < ids.size(); i++) {
+        float curr_item_prop = (*items)[ids[i]].get_value()/(*items)[ids[i]].get_weight();
+        float minor_prop = (*items)[minor].get_value()/(*items)[minor].get_weight();
+        if (curr_item_prop < minor_prop)
+            minor = ids[i];
+    }
+
+    return minor;
+}
+
 // Passa o id do item para remover da mochila
 void Knapsack::remove_item(int id) {
-    //auto it = this->knapsack_itens_ids.find(id);  // melhor usar campo is_in_bag de item do que fazer essa busca
-    if((*items).at(id).get_is_in_knapsack()){ // se o item está na mochila
-        Item& item = (*items).at(id);
-        this->value -= (*items).at(id).get_value();
-        this->weight -= (*items).at(id).get_weight();
+    if((*items)[id].get_is_in_knapsack()){ // se o item está na mochila
+        Item item = (*items)[id];
+        this->value -= item.get_value();
+        this->weight -= item.get_weight();
         this->num_items--;
         item.set_is_in_knapsack(0);
+
+        (*items).erase(id);
+        (*items)[id] = item;
+        
+        if (id == this->minor_value_item) 
+            this->minor_value_item = this->search_minor_value_item();
     }
 }
 
@@ -151,7 +176,6 @@ int Knapsack::pick_random_item_knapsack(){
 int Knapsack::pick_random_item(){
     // Gera um índice aleatório
     int random_index = std::rand() % (*items).size();
-    
     return random_index;
 }
 
@@ -159,11 +183,18 @@ bool Knapsack::change_item(int item_in, int item_out) {
     Item in = (*items)[item_in];
     Item out = (*items)[item_out];
 
-    // se cabe
-    if ( this->get_weight() - out.get_weight() + in.get_weight() <= this->get_max_weight() ) {
-        this->remove_item(item_out);
-        this->add_item(item_in);
-        return true;
+    if(!(*items)[item_in].get_is_in_knapsack() && (*items)[item_out].get_is_in_knapsack()){ // se o item que estamos adicionando nao estiver na mochila e o retirado estiver
+        // se cabe
+        if(this->get_weight() + in.get_weight() <= this->max_weight) {
+            this->add_item(item_in);
+            return true;
+        }
+        // se nao cabe mas, pode substituir
+        else if ( this->get_weight() - out.get_weight() + in.get_weight() <= this->max_weight ) {
+            this->remove_item(item_out);
+            this->add_item(item_in);
+            return true;
+        }
     }
 
     return false;

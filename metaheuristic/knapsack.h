@@ -23,6 +23,7 @@ class Knapsack
         shared_ptr<vector<vector<int>>> conflict_matrix;
 
         void update_minor_value_item(int id);
+        int search_minor_value_item();
         //set<int> knapsack_itens_ids;
     public:
         Knapsack(int max_weight, map<int, Item> *items, shared_ptr<vector<vector<int>>> conflict_matrix);
