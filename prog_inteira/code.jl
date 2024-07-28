@@ -175,7 +175,9 @@ println("Limite: ", time_limit_sec)
 
 # Não tenho certeza se é aqui que devo setar a "semente de aleatoriedade"
 # Não encontrei o uso disso nos slides nem nada
-Random.seed!(random_seed)
+if random_seed != nothing
+	Random.seed!(random_seed)
+end
 
 # Parsa o arquivo
 n, c, p, w, E = parse_file(filepath)
