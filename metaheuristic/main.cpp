@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <random>
-#include <ctime>
-#include <chrono>
 #include "simulated_annealing.h"
 #include "knapsack.h"
 #include "item.h"
@@ -31,13 +29,8 @@ int main(int argc, char **argv) {
 
     cout << *ks << endl;
 
-    auto start = std::chrono::high_resolution_clock::now();
     cout << "Starting simulated annealing..." << endl;
     simulated_annealing(ks);
-
-    auto end = std::chrono::high_resolution_clock::now();
-    auto time_taken_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
-    cout << "Time Taken: " << time_taken_s << "s" << endl;
 
     delete ks;
 }

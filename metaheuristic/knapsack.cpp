@@ -102,7 +102,9 @@ bool Knapsack::add_item(int id) {
 
         this->update_minor_value_item(id);
 
+#ifdef DEBUG
         cout << "Item added! " << "New weight: " << this->weight << " New value: " << this->value << endl;
+#endif
         
         return true;
     } else {
