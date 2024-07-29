@@ -21,12 +21,28 @@ void construct_initial_solution(Knapsack *ks)
     }
 }
 
-int main(int argc, char **argv) {
-    Knapsack *ks = Knapsack::read_knapsack_instance("./kpcg_instances/C3_BPPC_1_0_2.txt_0.1.dat");
-    //ks->show_items_set();
-    
-    construct_initial_solution(ks);
+#define ARG_FILENAME 1
+#define ARG_SEED 2
 
+int main(int argc, char **argv) {
+    if (argc <= ARG_FILENAME) {
+        cout << "Faltam parametros" << endl;
+        cout << "./main <caminho> <semente>" << endl;
+        return 1;
+    }
+
+    long long seed;
+    if (argc <= ARG_SEED) {
+        seed = time(0);
+    } else {
+        seed = stoi(argv[ARG_SEED]);
+    }
+    srand(seed);
+    cout << "Seed: " << seed << endl;
+
+    char* filename = argv[ARG_FILENAME];
+    Knapsack *ks = Knapsack::read_knapsack_instance(filename);
+    construct_initial_solution(ks);
     cout << *ks << endl;
 
     cout << "Starting simulated annealing..." << endl;

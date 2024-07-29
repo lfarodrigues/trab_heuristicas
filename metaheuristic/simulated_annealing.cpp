@@ -1,6 +1,4 @@
 #include <math.h>
-#include <random>
-#include <ctime>
 #include <chrono>
 #include "simulated_annealing.h"
 #include "knapsack.h"
@@ -19,8 +17,6 @@ void simulated_annealing(Knapsack *ks) {
     int best_weight = ks->get_weight();
     int best_num_items = ks->get_num_items();
     int tempChange = cmax;
-
-    srand(time(0)); // gerador de numeros aleatorios
 
     cout << "Starting simulated annealing..." << endl;
     auto start = std::chrono::high_resolution_clock::now();
