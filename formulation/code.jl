@@ -66,7 +66,11 @@ end
 
 # Função auxiliar para ler um int do arquivo de input
 function parse_int(prefix::String, value::String)
-	return parse(Int, strip(value[length(prefix)+1:length(value)-1]))
+	if endswith(value, ";")
+		return parse(Int, strip(value[length(prefix)+1:length(value)-1]))
+	else
+		return parse(Int, strip(value[length(prefix)+1:length(value)]))
+	end
 end
 
 # Função auxiliar para ler uma tupla de valores do arquivo de input
