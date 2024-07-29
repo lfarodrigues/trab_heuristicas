@@ -14,7 +14,9 @@ void simulated_annealing(Knapsack *ks) {
     int c = 0;
     int t = t_o;
     int temp_change = cmax;
-    int best = ks->get_value();
+    int best_value = ks->get_value();
+    int best_weight = ks->get_weight();
+    int best_num_items = ks->get_num_items();
     
     int tempChange = cmax;
 
@@ -36,12 +38,19 @@ void simulated_annealing(Knapsack *ks) {
                 temp_change-=1;
                 if (temp_change%10==0)
                     t=alpha*t;
-                if (ks->get_value() >= best)
-                    best = ks->get_value();
+                if (ks->get_value() >= best_value) {
+                    best_value = ks->get_value();
+                    best_weight = ks->get_weight();
+                    best_num_items = ks->get_num_items();
+                }
             } else { // reverte
                 ks->change_item(out, in);
             }
         }
     }
-    cout << "Best value encountered: " << best << endl;
+
+    cout << "Finished" << endl << endl;
+    cout << "Value: " << best_value << endl;
+    cout << "Weight: " << best_weight << endl;
+    cout << "Items: " << best_num_items << endl;
 }

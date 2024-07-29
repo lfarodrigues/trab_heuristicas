@@ -32,15 +32,12 @@ int main(int argc, char **argv) {
     cout << *ks << endl;
 
     auto start = std::chrono::high_resolution_clock::now();
-    cout << "Start simulated annealing..." << endl;
+    cout << "Starting simulated annealing..." << endl;
     simulated_annealing(ks);
-    cout << "Finished!" << endl;
+
     auto end = std::chrono::high_resolution_clock::now();
     auto time_taken_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
     cout << "Time Taken: " << time_taken_s << "s" << endl;
-
-    cout << "Final knapsack object:" << endl;
-    cout << *ks << endl;
 
     delete ks;
 }
