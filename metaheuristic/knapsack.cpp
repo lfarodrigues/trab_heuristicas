@@ -50,7 +50,7 @@ Knapsack* Knapsack::read_knapsack_instance(const char* path)
             // Extrai o valor de c
             sscanf(line, "param c := %d;", &c);
             cout << "c: " << c << endl;
-        } else if (strncmp(line, "param : V : p w :=", 18) == 0) {
+        } else if ((strncmp(line, "param : V : p w :=", 18) == 0) || (strncmp(line, "param: V : p w :=", 17) == 0)) {
             // Ignora o cabeçalho e lê os dados até encontrar um ';'
             while (fgets(line, sizeof(line), hdl)) {
                 if (strchr(line, ';') != NULL) {
