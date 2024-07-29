@@ -7,10 +7,9 @@
 
 using namespace std;
 
-void construct_initial_solution(Knapsack *ks) 
+void construct_initial_solution(Knapsack *ks, long long seed)
 {
-    random_device rd;  // Obtém uma semente do hardware
-    mt19937 gen(rd()); // Inicializa o gerador Mersenne Twister
+    mt19937 gen(seed); // Inicializa o gerador Mersenne Twister
     uniform_int_distribution<> dis(0, ks->get_items_set().size() - 1); // Define a distribuição
     int tries = 100;
 
@@ -42,7 +41,7 @@ int main(int argc, char **argv) {
 
     char* filename = argv[ARG_FILENAME];
     Knapsack *ks = Knapsack::read_knapsack_instance(filename);
-    construct_initial_solution(ks);
+    construct_initial_solution(ks, seed);
     cout << *ks << endl;
 
     cout << "Starting simulated annealing..." << endl;
