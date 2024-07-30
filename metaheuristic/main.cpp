@@ -1,6 +1,8 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <random>
+#include <ctime>
 #include "simulated_annealing.h"
 #include "knapsack.h"
 #include "item.h"
