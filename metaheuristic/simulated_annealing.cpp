@@ -5,18 +5,17 @@
 #include "item.h"
 
 void simulated_annealing(Knapsack *ks) {
-    float alpha = 0.99999999;
+    const float alpha = 0.999;
     
-    int cmax = 50000; // numero de loops
+    int cmax = 100000; // numero de loops
 
-    int t_o = 200;
+    int t_o = 1000;
     int c = 0;
-    int t = t_o;
+    float t = (float)t_o;
     int temp_change = cmax;
     int best_value = ks->get_value();
     int best_weight = ks->get_weight();
     int best_num_items = ks->get_num_items();
-    int tempChange = cmax;
 
     cout << "Starting simulated annealing..." << endl;
     auto start = std::chrono::high_resolution_clock::now();
@@ -34,10 +33,12 @@ void simulated_annealing(Knapsack *ks) {
             double u = static_cast<double>(rand()) / RAND_MAX;
             
             if(delta>0 || exp(-fabs(delta)/t)>u) {
-                temp_change-=1;
-                if (temp_change%10==0)
-                    t=alpha*t;
-                if (ks->get_value() >= best_value) {
+                temp_change -= 1;
+                if (temp_change % 10 == 0) {
+                    t = alpha * t;
+                }
+
+                if (ks->get_value() > best_value) {
                     best_value = ks->get_value();
                     best_weight = ks->get_weight();
                     best_num_items = ks->get_num_items();

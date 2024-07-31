@@ -46,7 +46,6 @@ int main(int argc, char **argv) {
     construct_initial_solution(ks, seed);
     cout << *ks << endl;
 
-    cout << "Starting simulated annealing..." << endl;
     simulated_annealing(ks);
 
     delete ks;
