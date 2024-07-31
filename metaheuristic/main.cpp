@@ -22,31 +22,40 @@ void construct_initial_solution(Knapsack *ks, long long seed)
     }
 }
 
-#define ARG_FILENAME 1
-#define ARG_SEED 2
-
-int main(int argc, char **argv) {
-    if (argc <= ARG_FILENAME) {
-        cout << "Faltam parametros" << endl;
-        cout << "./main <caminho> <semente>" << endl;
-        return 1;
-    }
-
-    long long seed;
-    if (argc <= ARG_SEED) {
-        seed = time(0);
-    } else {
-        seed = stoi(argv[ARG_SEED]);
-    }
+void run_test(const char* filename, long long seed) {
+    cout << filename << endl;
     srand(seed);
     cout << "Seed: " << seed << endl;
-
-    char* filename = argv[ARG_FILENAME];
     Knapsack *ks = Knapsack::read_knapsack_instance(filename);
     construct_initial_solution(ks, seed);
     cout << *ks << endl;
 
     simulated_annealing(ks);
-
     delete ks;
+}
+
+int main(int argc, char **argv) {
+    auto files = {
+        "../kpcg_instances/C1_BPPC_8_0_9.txt_0.1.dat",
+//        "../kpcg_instances/C3_BPPC_1_0_2.txt_0.1.dat",
+//        "../kpcg_instances/C10_BPPC_5_0_5.txt_0.1.dat",
+//        "../kpcg_instances/R1_BPPC_2_0_5.txt_0.1.dat",
+//        "../kpcg_instances/R3_BPPC_4_0_9.txt_0.1.dat",
+//        "../kpcg_instances/R10_BPPC_1_0_6.txt_0.1.dat",
+//        "../kpcg_instances/test_1000_2000_r0.05-0.dat",
+//        "../kpcg_instances/HB10.dat",
+//        "../kpcg_instances/HB11.dat",
+//        "../kpcg_instances/HB12.dat",
+    };
+
+    auto seeds = {
+        5953, 6143, 6311, 6481, 6679, 6841, 7001, 7211, 7417, 7573,
+    };
+
+    for (auto file : files) {
+        for (auto seed : seeds) {
+            run_test(file, seed);
+            cout << endl << endl;
+        }
+    }
 }

@@ -16,8 +16,9 @@ void simulated_annealing(Knapsack *ks) {
     int best_value = ks->get_value();
     int best_weight = ks->get_weight();
     int best_num_items = ks->get_num_items();
+    int initial_value = ks->get_value();
 
-    cout << "Starting simulated annealing..." << endl;
+//    cout << "Starting simulated annealing..." << endl;
     auto start = std::chrono::high_resolution_clock::now();
 
     for (c; c < cmax; c++){
@@ -45,7 +46,7 @@ void simulated_annealing(Knapsack *ks) {
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto time_taken_s = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0;
-                    cout << "New Best - Value: " << best_value << " - Weight: " << best_weight << " - Items: " << best_num_items << " - Time: " << time_taken_s << "s" << endl;
+//                    cout << "New Best - Value: " << best_value << " - Weight: " << best_weight << " - Items: " << best_num_items << " - Time: " << time_taken_s << "s" << endl;
                 }
             } else { // reverte
                 ks->change_item(out, in);
@@ -53,8 +54,10 @@ void simulated_annealing(Knapsack *ks) {
         }
     }
 
-    cout << "Finished" << endl << endl;
-    cout << "Value: " << best_value << endl;
-    cout << "Weight: " << best_weight << endl;
-    cout << "Items: " << best_num_items << endl;
+//    cout << "Finished" << endl << endl;
+    cout << initial_value << "," << best_value << "," << best_weight << "," << best_num_items << "," << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count() / 1000.0 << endl;
+//    cout << "Value: " << best_value << endl;
+//    cout << "Weight: " << best_weight << endl;
+//    cout << "Items: " << best_num_items << endl;
+//    cout << "Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count() / 1000.0 << endl;
 }

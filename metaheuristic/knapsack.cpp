@@ -59,7 +59,7 @@ Knapsack* Knapsack::read_knapsack_instance(const char* path)
                 // Processa os dados conforme necessário
                 sscanf(line, "%d %d %d", &v, &p, &w);
 
-                cout << "v: " << v << " p: " << p << " w: " << w << endl;
+//                cout << "v: " << v << " p: " << p << " w: " << w << endl;
 
                 Item item(v, p, w);
                 (*items)[v] = item;
